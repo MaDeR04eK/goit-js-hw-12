@@ -1,3 +1,4 @@
+import axios from 'axios';
 import iziToast from 'izitoast';
 import SimpleLightbox from 'simplelightbox';
 import 'izitoast/dist/css/iziToast.min.css';
@@ -25,14 +26,43 @@ const searchForm = document
   });
 
 function searchImages(query) {
-  const params = `key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&per_page=21`;
+  //   const params = `key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&per_page=21`;
 
-  fetch(`${apiUrl}?${params}`)
+  const params = {
+    key: apiKey,
+    q: query,
+    image_type: 'photo',
+    orientation: 'horizontal',
+    safesearch: true,
+    per_page: 21,
+  };
+
+  //   fetch(`${apiUrl}?${params}`)
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       if (data.hits && data.hits.length > 0) {
+  //         displayImages(data.hits);
+  //       } else {
+  //         showNoImagesMessage();
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching images:', error);
+  //       showErrorMessage();
+  //         });
+  axios
+    .get(apiUrl, { params })
     .then(response => {
-      if (!response.ok) {
+      if (response.status === 200) {
+        return response.data;
+      } else {
         throw new Error(response.status);
       }
-      return response.json();
     })
     .then(data => {
       if (data.hits && data.hits.length > 0) {
@@ -53,9 +83,9 @@ function displayImages(images) {
 
   images.forEach(image => {
     const card = document.createElement('div');
-      card.className = 'image-card';
-      
-          const link = document.createElement('a');
+    card.className = 'image-card';
+
+    const link = document.createElement('a');
     link.href = image.webformatURL;
 
     const img = document.createElement('img');
@@ -71,19 +101,18 @@ function displayImages(images) {
       <p>Comments: ${image.comments}</p>
       <p>Downloads: ${image.downloads}</p>
     `;
-      card.appendChild(link);
-      link.appendChild(img);
+    card.appendChild(link);
+    link.appendChild(img);
     // card.appendChild(img);
     card.appendChild(metadata);
 
-      gallery.appendChild(card);
-
+    gallery.appendChild(card);
   });
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionDelay: 250,
   });
-          lightbox.refresh()
+  lightbox.refresh();
 }
 
 function showNoImagesMessage() {
