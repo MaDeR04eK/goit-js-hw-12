@@ -17,7 +17,7 @@ const gallery = document.querySelector('.gallery');
 
 searchForm.addEventListener('submit', async function (event) {
   event.preventDefault();
-  searchTerm = document.querySelector('input').value.trim();
+  searchTerm = document.querySelector('.input').value.trim();
 
   if (searchTerm === '') {
     iziToast.error({
@@ -59,6 +59,15 @@ loadMoreButton.addEventListener('click', async function () {
   }
 });
 
+function getGalleryCardHeight() {
+  const galleryCard = document.querySelector('.image-card');
+  if (galleryCard) {
+    const cardRect = galleryCard.getBoundingClientRect();
+    return cardRect.height;
+  }
+  return 0;
+}
+
 async function searchImages(query, page) {
   try {
     const params = {
@@ -74,7 +83,7 @@ async function searchImages(query, page) {
     const response = await axios.get(apiUrl, { params });
 
     if (response.status === 200) {
-      return response.data;
+          return response.data;
     } else {
       throw new Error(response.status);
     }
@@ -83,11 +92,10 @@ async function searchImages(query, page) {
   }
 }
 
-function displayImages(images, append) {
+ async function displayImages(images, append) {
   if (!append) {
-    gallery.innerHTML = '';
-  }
-
+      gallery.innerHTML = '';
+    }
   images.forEach(image => {
     const card = document.createElement('div');
     card.className = 'image-card';
@@ -113,6 +121,13 @@ function displayImages(images, append) {
     card.appendChild(metadata);
 
     gallery.appendChild(card);
+  });
+     
+       const cardHeight = getGalleryCardHeight();
+     
+      window.scrollBy({
+    top: 2 * cardHeight,
+    behavior: 'smooth',
   });
 
   const lightbox = new SimpleLightbox('.gallery a', {
