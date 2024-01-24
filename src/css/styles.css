@@ -71,4 +71,8 @@
 #load-more-button {
   margin-right: auto;
   margin-left: auto;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background: green;
+  border: none;
 }

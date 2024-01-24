@@ -83,7 +83,7 @@ async function searchImages(query, page) {
     const response = await axios.get(apiUrl, { params });
 
     if (response.status === 200) {
-          return response.data;
+      return response.data;
     } else {
       throw new Error(response.status);
     }
@@ -92,10 +92,10 @@ async function searchImages(query, page) {
   }
 }
 
- async function displayImages(images, append) {
+async function displayImages(images, append) {
   if (!append) {
-      gallery.innerHTML = '';
-    }
+    gallery.innerHTML = '';
+  }
   images.forEach(image => {
     const card = document.createElement('div');
     card.className = 'image-card';
@@ -122,10 +122,10 @@ async function searchImages(query, page) {
 
     gallery.appendChild(card);
   });
-     
-       const cardHeight = getGalleryCardHeight();
-     
-      window.scrollBy({
+
+  const cardHeight = getGalleryCardHeight();
+
+  window.scrollBy({
     top: 2 * cardHeight,
     behavior: 'smooth',
   });
