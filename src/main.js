@@ -17,6 +17,7 @@ const gallery = document.querySelector('.gallery');
 
 searchForm.addEventListener('submit', async function (event) {
   event.preventDefault();
+
   searchTerm = document.querySelector('.input').value.trim();
 
   if (searchTerm === '') {
@@ -46,7 +47,8 @@ searchForm.addEventListener('submit', async function (event) {
 
 loadMoreButton.addEventListener('click', async function () {
   try {
-    currentPage += 1;
+    currentPage += 1; 
+    disable(loadMoreButton, preloader)
     const data = await searchImages(searchTerm, currentPage);
     if (data.hits && data.hits.length > 0) {
       displayImages(data.hits, true);
@@ -56,6 +58,8 @@ loadMoreButton.addEventListener('click', async function () {
   } catch (error) {
     console.error('Error fetching more images:', error);
     hideLoadMoreButton();
+  } finally {
+enable(loadMoreButton, preloader)
   }
 });
 
@@ -163,4 +167,14 @@ function showLoadMoreButton() {
 
 function hideLoadMoreButton() {
   loadMoreButton.style.display = 'none';
+}
+
+function disable(loadMoreButton, preloader) {
+      preloader.style.display = 'inline-block'
+  loadMoreButton.disabled = true;
+}
+
+function enable(loadMoreButton, preloader) {
+      preloader.style.display = 'none'
+  loadMoreButton.disabled = false;
 }

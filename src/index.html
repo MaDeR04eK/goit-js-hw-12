@@ -11,12 +11,14 @@
     <div class="search-container">
       <form id="search-form">
         <input class="input" type="text" placeholder="Search images..." />
-        <button class="button" type="submit">Search</button>
+        <button class="button" id="btnSubmit" type="submit">Search</button>
       </form>
     </div>
 
     <div class="gallery"></div>
-    <button id="load-more-button" style="display: none">Load more</button>
+    <button id="load-more-button" style="display: none">
+      <span class="loader" id="preloader"></span>Load more
+    </button>
     <p id="end-of-results-message" style="display: none">
       We're sorry, but you've reached the end of search results.
     </p>
