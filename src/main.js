@@ -1,3 +1,4 @@
+import './css/preloader.css'
 import axios from 'axios';
 import iziToast from 'izitoast';
 import SimpleLightbox from 'simplelightbox';
@@ -10,9 +11,9 @@ const apiUrl = 'https://pixabay.com/api/';
 let currentPage = 1;
 let searchTerm = '';
 const perPage = 40;
-
 const searchForm = document.getElementById('search-form');
 const loadMoreButton = document.getElementById('load-more-button');
+const preloader = document.getElementById('preloader')
 const gallery = document.querySelector('.gallery');
 
 searchForm.addEventListener('submit', async function (event) {
@@ -47,8 +48,8 @@ searchForm.addEventListener('submit', async function (event) {
 
 loadMoreButton.addEventListener('click', async function () {
   try {
-    currentPage += 1; 
-    disable(loadMoreButton, preloader)
+    currentPage += 1;
+    disable(loadMoreButton, preloader);
     const data = await searchImages(searchTerm, currentPage);
     if (data.hits && data.hits.length > 0) {
       displayImages(data.hits, true);
@@ -59,7 +60,7 @@ loadMoreButton.addEventListener('click', async function () {
     console.error('Error fetching more images:', error);
     hideLoadMoreButton();
   } finally {
-enable(loadMoreButton, preloader)
+    enable(loadMoreButton, preloader);
   }
 });
 
@@ -170,11 +171,11 @@ function hideLoadMoreButton() {
 }
 
 function disable(loadMoreButton, preloader) {
-      preloader.style.display = 'inline-block'
+  preloader.style.display = 'inline-block';
   loadMoreButton.disabled = true;
 }
 
 function enable(loadMoreButton, preloader) {
-      preloader.style.display = 'none'
+  preloader.style.display = 'none';
   loadMoreButton.disabled = false;
 }
